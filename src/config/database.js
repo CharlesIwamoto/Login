@@ -1,9 +1,9 @@
 module.exports = {
     "dialect": "postgres",
     "host": "localhost",
-    "database": "login_nodejs",
+    "database": "Help_Desk",
     "username": "postgres",
-    "password": "123",
+    "password": "12345678",
     define: {
         timestamp: true,
         underscored: true,

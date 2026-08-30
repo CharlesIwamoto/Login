@@ -8,7 +8,9 @@ class User extends Model {
             email: DataTypes.STRING,
             password: DataTypes.VIRTUAL,
             password_hash: DataTypes.STRING,
-            data_de_nascimento: DataTypes.DATE
+            data_de_nascimento: DataTypes.DATE,
+            status: DataTypes.ENUM("ACTIVE", "ARCHIVED"),
+            profile: DataTypes.ENUM("ADMIN", "ANALYST", "USER")
         },
             {
                 sequelize
@@ -24,6 +26,11 @@ class User extends Model {
     checkPassword(password) {
         return bcrypt.compare(password, this.password_hash);
     };
+
+    static associate(models){
+        this.hasMany(models.Ticket);
+        this.hasMany(models.Comment);
+    }
 }
 
 export default User;
