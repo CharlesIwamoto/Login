@@ -14,6 +14,7 @@ export default  (req, res, next) => {
         const decoded =  jwt.verify(token, auth.secret);
 
         req.userId = decoded.id;
+        req.userProfile = decoded.profile;
         
         return next();
     } catch (error) {

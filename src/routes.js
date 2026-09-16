@@ -6,6 +6,7 @@ import comment from "./app/controllers/CommentsController";
 import ticket from "./app/controllers/TicketsController";
 
 import auth from "./app/middlewares/auth";
+import authorize from "./app/middlewares/authorize";
 
 const routes = new Router();
 
@@ -16,18 +17,18 @@ routes.post("/sessions", sessions.create);
 routes.use(auth);
 
 //user
-routes.get("/users", users.index);
-routes.post("/users", users.create);
-routes.get("/users/:id", users.show);
-routes.delete("/users/:id", users.destroy);
-routes.put("/users/:id", users.update);
+routes.get("/users", authorize, users.index);
+routes.post("/users", authorize, users.create);
+routes.get("/users/:id", authorize, users.show);
+routes.delete("/users/:id", authorize, users.destroy);
+routes.put("/users/:id", authorize, users.update);
 
 //categories
-routes.post("/categories", categories.create);
-routes.get("/categories/:id", categories.show);
+routes.post("/categories", authorize, categories.create);
+routes.get("/categories/:id", authorize, categories.show);
 routes.get("/categories", categories.index);
-routes.put("/categories/:id", categories.update);
-routes.delete("/categories/:id", categories.destroy);
+routes.put("/categories/:id", authorize, categories.update);
+routes.delete("/categories/:id", authorize, categories.destroy);
 
 //Comments
 routes.post("/comments", comment.create);

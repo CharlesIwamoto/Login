@@ -19,7 +19,7 @@ class SessionsController {
             return res.status(401).json({ error: "password nao confere" });
         }
 
-        const { id, name } = user;
+        const { id, name, profile } = user;
 
 
         return res.json({
@@ -27,8 +27,9 @@ class SessionsController {
                 id,
                 name,
                 email,
+                profile
             },
-            token: jwt.sign({ id, name, email }, authConfig.secret, {
+            token: jwt.sign({ id, name, email, profile }, authConfig.secret, {
                 expiresIn: authConfig.expiresIn
             })
         });

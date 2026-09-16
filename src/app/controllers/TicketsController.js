@@ -26,7 +26,20 @@ class TicketsController {
 
         const limit = parseInt(req.query.limit || 25);
         const page = parseInt(req.query.page || 1);
-        
+
+        if (req.userProfile !== "ADMIN" && req.userProfile !== "ANALYST") {
+            where = {
+                ...where,
+                user_id: req.userId
+            };
+        }
+
+        if (req.userProfile === "ANALYST") {
+            where = {
+                ...where,
+                analyst_id: req.userId
+            };
+        }
 
         if (title) {
             where = {
@@ -117,9 +130,9 @@ class TicketsController {
             },
             {
                 model: Comment,
-                attributes:["message", "createdAt"]
+                attributes: ["message", "createdAt"]
             }
-        ],
+            ],
             limit,
             offset: limit * page - limit
         });
@@ -165,7 +178,12 @@ class TicketsController {
             return res.status(400).json({ error: "erro de validação" });
         }
 
-        const ticket = await Ticket.findByPk(req.params.id);
+        const ticket = await Ticket.findOne({
+            where: {
+                id: req.params.id,
+                user_id: req.userId
+            }
+        });
 
         if (!ticket) {
             return res.status(404).json({
@@ -184,7 +202,12 @@ class TicketsController {
     }
 
     async destroy(req, res) {
-        const ticket = await Ticket.findByPk(req.params.id);
+        const ticket = await Ticket.findOne({
+            where: {
+                id: req.params.id,
+                user_id: req.userId
+            }
+        });
 
         if (!ticket) {
             return res.status(404).json({
