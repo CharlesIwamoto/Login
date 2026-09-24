@@ -77,7 +77,6 @@ class UsersController {
         }
 
         const { id, name, email, data_de_nascimento, createdAt, updatedAt } = await User.create(req.body);
-        console.log({ id, name, email, data_de_nascimento, createdAt, updatedAt });
 
         return res.status(201).json({ id, name, email, data_de_nascimento, createdAt, updatedAt });
     }
@@ -87,6 +86,7 @@ class UsersController {
             name: Yup.string(),
             email: Yup.string().email(),
             data_de_nascimento: Yup.date(),
+            profile: Yup.string().oneOf(["ADMIN", "USER", "ANALYST"]),
             oldPassword: Yup.string().min(8),
             password: Yup.string().min(8).when("oldPassword", ([oldPassword], field) =>
                 oldPassword ? field.required() : field
@@ -118,6 +118,7 @@ class UsersController {
             name: user.name,
             email: user.email,
             data_de_nascimento: user.data_de_nascimento,
+            profile: user.profile,
             createdAt: user.createdAt,
             updatedAt: user.updatedAt
         });

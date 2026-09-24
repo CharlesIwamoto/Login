@@ -26,7 +26,7 @@ routes.put("/users/:id", authorize, users.update);
 //categories
 routes.post("/categories", authorize, categories.create);
 routes.get("/categories/:id", authorize, categories.show);
-routes.get("/categories", categories.index);
+routes.get("/categories", authorize, categories.index);
 routes.put("/categories/:id", authorize, categories.update);
 routes.delete("/categories/:id", authorize, categories.destroy);
 
